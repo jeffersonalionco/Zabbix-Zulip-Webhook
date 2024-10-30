@@ -1,4 +1,4 @@
-WebHook Zabbix Para Zulip
+# WebHook Zabbix Para Zulip
 
 ---
 
@@ -7,7 +7,9 @@ Este projeto foi criado para fins de integração entre o **ZULIP** e o **ZABBIX
 
 
 ---
-Como usar?
+<BR>
+
+## Como usar?
 
 
 
@@ -19,10 +21,151 @@ Para iniciar automaticamente o projeto Node.js quando a máquina reiniciar, voc�
 
 
 
+```bash
+git clone https://github.com/jeffersonalionco/Zabbix-Zulip-Webhook.git
+```
+
+
+Depois entre na pasta baixada com o comado:
 
 
 
-# Configuração do Serviço Zabbix-Zulip Webhook
+```bash
+cd Zabbix-Zulip-Webhook
+ ```
+
+ Após entrar na pasta será necessario instalar alguas dependencias com o comando:
+
+ 
+```bash
+npm install
+```
+
+
+>  **Nota**:
+> - É necessario gerar o arquivo **zuliprc** do seu bot no zulip e colocar dentro desta pasta **Zabbix-Zulip-Webhook** do seu projeto.
+> ...
+
+
+Pronto agora so executar
+
+```bash
+npm index.js
+```
+
+**Não esqueça - de configurar o zabbix também.**
+
+---
+
+<br> <br> <br>
+# Configurações no Zabbix 
+
+
+Em alertas no zabbix crie uma midia  do tipo webhook, em paramtros coloque os abaixos:
+
+
+> Parâmetros do Zabbix
+
+| Parâmetro      | Valor                                          |
+|----------------|------------------------------------------------|
+| **hostname**   | `{HOST.NAME}`                                  |
+| **item**       | `{ITEM.NAME1} is {ITEM.VALUE1}`                |
+| **link**       | `{$ZABBIX_URL}/tr_events.php?triggerid={TRIGGER.ID}&eventid={EVENT.ID}` |
+| **severity**   | `{TRIGGER.SEVERITY}`                           |
+| **status**     | `{TRIGGER.STATUS}`                             |
+| **trigger**    | `{TRIGGER.NAME}`                               |
+
+
+
+<br><br>
+
+> Na opção de script cole o codigo abaixo:
+    > - **Nota:**
+    > - Em **IP-DO-SERVIDOR** insira o ip do servidor(Maquina) que você irá executar o *WebHook Zabbix Para Zulip* que você acabou de baixar e instalar.
+<br>
+
+```script
+try {
+    Zabbix.Log(4, 'zulip webhook script value=' + value);
+
+    var result = {
+        'tags': {
+            'endpoint': 'zulip'
+        }
+    };
+
+    // Faz o parse do valor recebido
+    var params = JSON.parse(value);
+    var req = new HttpRequest();
+    var payload = {};
+    var resp;
+
+    // Define o cabeçalho para JSON
+    req.addHeader('Content-Type: application/json');
+
+    // Define o status baseado no estado do trigger
+    var status = "";
+    if (params.status === "PROBLEM") {
+        status = "**⚠️ Problema detectado**. \n\n Nível:";
+    } else if (params.status === "OK") {
+        status = "**✅ Problema Resolvido** \n\n Nível:";
+    } else {
+        status = params.status;
+    }
+
+    // Cria o payload para enviar ao seu servidor Node.js
+    payload = {
+        status: status,
+        severity: params.severity,
+        hostname: params.hostname,
+        item: params.item,
+        trigger: params.trigger,
+        link: params.link
+    };
+
+    // Defina o endpoint do seu servidor
+    var zulip_endpoint = "<IP-DO-SERVIDOR>:3007/zabbix-webhook"; // Substitua pelo IP ou hostname do seu servidor
+
+    // Envia a requisição POST para o endpoint
+    resp = req.post(zulip_endpoint, JSON.stringify(payload));
+
+    // Verifica se a resposta é bem-sucedida
+    if (req.getStatus() !== 200) {
+        throw 'Response code: ' + req.getStatus();
+    }
+
+    // Processa a resposta
+    resp = JSON.parse(resp);
+    result.tags.issue_id = resp.id;
+    result.tags.issue_key = resp.key;
+
+} catch (error) {
+    Zabbix.Log(4, 'zulip issue creation failed json: ' + JSON.stringify(payload));
+    Zabbix.Log(4, 'zulip issue creation failed: ' + error);
+    result = {};
+}
+
+return JSON.stringify(result);
+
+```
+
+<br><br>
+
+Depois la em macro crie o seguinte
+
+``` Macro
+{$ZABBIX_URL} : http://IP-DO-SERVIDOR/ 
+```
+
+> IP-DO-SERVIDOR - substitua pelo ip do seu servidor zabbix ativo.
+
+
+<br> <br> <br>
+
+---
+
+# DICAS EXTRAS LINUX 
+## - Para inicializar o serviço automatico do Zabbix-Zulip Webhook siga as etapas abaixo
 
 Este guia fornece instruções para configurar o serviço **Zabbix-Zulip Webhook** para iniciar automaticamente em reinicializações e falhas, usando **systemd**.
 

@@ -205,4 +205,4 @@ Esse arquivo Markdown (`.md`) está formatado para fácil visualização e leitu
 **Jefferson Alionco**  
 Programador e entusiasta de tecnologias de integração e automação, com ampla experiência em Node.js, servidores e integração com ferramentas de monitoramento como Zabbix e Zulip.  
 
-Entre em contato: [email@exemplo.com](mailto:email@exemplo.com)
+Entre em contato: [EMAIL: Jefferson L. Alionco](mailto:jeffersonalionco@gmail.com)

@@ -86,7 +86,7 @@ Em alertas no zabbix crie uma midia  do tipo webhook, em paramtros coloque os ab
 
 ```script
 try {
-    Zabbix.Log(4, 'zulip webhook script value=' + value);
+    Zabbix.Log(4, 'valor do script do webhook zulip. Value=' + value);
 
     var result = {
         'tags': {
@@ -140,8 +140,8 @@ try {
     result.tags.issue_key = resp.key;
 
 } catch (error) {
-    Zabbix.Log(4, 'zulip issue creation failed json: ' + JSON.stringify(payload));
-    Zabbix.Log(4, 'zulip issue creation failed: ' + error);
+    Zabbix.Log(4, 'Criação do problema zulip falhou JSON: ' + JSON.stringify(payload));
+    Zabbix.Log(4, 'Falha na criação do problema zulip: ' + error);
     result = {};
 }
 

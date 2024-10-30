@@ -61,7 +61,7 @@ npm index.js
 # Configurações no Zabbix 
 
 
-Em alertas no zabbix crie uma midia  do tipo webhook, em paramtros coloque os abaixos:
+Em alertas no zabbix crie uma midia  do tipo webhook, em parametros coloque os abaixos:
 
 
 > Parâmetros do Zabbix

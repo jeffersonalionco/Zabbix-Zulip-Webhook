@@ -28,9 +28,11 @@ Este projeto foi criado para integração entre o **ZULIP** e o **ZABBIX**, poss
     ```
 
 4. **Adicionar Configuração do Bot Zulip**  
-   É necessário gerar o arquivo **zuliprc** do bot no Zulip e colocá-lo dentro da pasta **Zabbix-Zulip-Webhook**.
+   É necessário gerar o arquivo **zuliprc** do bot no Zulip e colocá-lo dentro da pasta **Zabbix-Zulip-Webhook/src/**.
 
-5. **Executar o Projeto**  
+5. Mude o arquivo config.json conforme a sua necessidade.
+
+6. **Executar o Projeto**  
    Inicie o projeto com o comando:
 
     ```bash

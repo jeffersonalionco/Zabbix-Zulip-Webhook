@@ -66,58 +66,68 @@ Este projeto foi criado para integração entre o **ZULIP** e o **ZABBIX**, poss
 
 ```javascript
    try {
-       Zabbix.Log(4, 'valor do script do webhook zulip. Value=' + value);
+    Zabbix.Log(4, 'zulip webhook script value=' + value);
 
-       var result = {
-           'tags': {
-               'endpoint': 'zulip'
-           }
-       };
+    var result = {
+        'tags': {
+            'endpoint': 'zulip'
+        }
+    };
 
-       var params = JSON.parse(value);
-       var req = new HttpRequest();
-       var payload = {};
-       var resp;
+    // Faz o parse do valor recebido
+    var params = JSON.parse(value);
+    var req = new HttpRequest();
+    var payload = {};
+    var resp;
 
-       req.addHeader('Content-Type: application/json');
+    // Define o cabeçalho para JSON
+    req.addHeader('Content-Type: application/json');
 
-       var status = "";
-       if (params.status === "PROBLEM") {
-           status = "**⚠️ Problema detectado**. \n\n Nível:";
-       } else if (params.status === "OK") {
-           status = "**✅ Problema Resolvido** \n\n Nível:";
-       } else {
-           status = params.status;
-       }
+    // Define o status baseado no estado do trigger
+    var status = "";
+    if (params.status === "PROBLEM") {
+        status = "PROBLEM";
+    } else if (params.status === "OK") {
+        status = "OK";
+    } else {
+        status = params.status;
+    }
 
-       payload = {
-           status: status,
-           severity: params.severity,
-           hostname: params.hostname,
-           item: params.item,
-           trigger: params.trigger,
-           link: params.link
-       };
+    // Cria o payload para enviar ao seu servidor Node.js
+    payload = {
+        status: status,
+        severity: params.severity,
+        hostname: params.hostname,
+        item: params.item,
+        ip: params.ip,
+        eventId: params.eventId,
+        trigger: params.trigger,
+        link: params.link
+    };
 
-       var zulip_endpoint = "<IP-DO-SERVIDOR>:3007/zabbix-webhook";
+    // Defina o endpoint do seu servidor
+    var zulip_endpoint = "10.0.1.4:3007/zabbix-webhook"; // Substitua pelo IP ou hostname do seu servidor
 
-       resp = req.post(zulip_endpoint, JSON.stringify(payload));
+    // Envia a requisição POST para o endpoint
+    resp = req.post(zulip_endpoint, JSON.stringify(payload));
 
-       if (req.getStatus() !== 200) {
-           throw 'Response code: ' + req.getStatus();
-       }
+    // Verifica se a resposta é bem-sucedida
+    if (req.getStatus() !== 200) {
+        throw 'Response code: ' + req.getStatus();
+    }
 
-       resp = JSON.parse(resp);
-       result.tags.issue_id = resp.id;
-       result.tags.issue_key = resp.key;
+    // Processa a resposta
+    resp = JSON.parse(resp);
+    result.tags.issue_id = resp.id;
+    result.tags.issue_key = resp.key;
 
-   } catch (error) {
-       Zabbix.Log(4, 'Criação do problema zulip falhou JSON: ' + JSON.stringify(payload));
-       Zabbix.Log(4, 'Falha na criação do problema zulip: ' + error);
-       result = {};
-   }
+} catch (error) {
+    Zabbix.Log(4, 'zulip issue creation failed json: ' + JSON.stringify(payload));
+    Zabbix.Log(4, 'zulip issue creation failed: ' + error);
+    result = {};
+}
 
-   return JSON.stringify(result);
+return JSON.stringify(result);
 ```
 
 <br><br>

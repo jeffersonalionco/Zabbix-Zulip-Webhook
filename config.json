@@ -1,5 +1,10 @@
 {
     "nomeSystem" : "Nome Software",
-    "nomeEmpresa": "Nome da Empresa"
+    "nomeEmpresa": "Nome da Empresa",
+    "message": {
+        "canal": "Testes",
+        "topicoErro": "Problemas",
+        "topicoResolucao": "Resolvido"
+    }
 
 }

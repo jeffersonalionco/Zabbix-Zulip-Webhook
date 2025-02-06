@@ -27,8 +27,6 @@ export const startZulip = async (req, res) => {
 
         const params = req.body;
 
-        console.log(req.body.event)
-
         let contentFormatError = `
 ---
 
@@ -75,16 +73,16 @@ export const startZulip = async (req, res) => {
 
         if(params.status === 'OK'){
              messageParams = {
-                to: "Testes", // Nome do stream
+                to: configSystem.message.canal, // Nome do stream
                 type: "stream",
-                topic: "Resolvido",
+                topic: configSystem.message.topicoResolucao,
                 content: contentFormat
             };
         }else{
              messageParams = {
-                to: "Testes", // Nome do stream
+                to: configSystem.message.canal, // Nome do stream
                 type: "stream",
-                topic: "Problemas",
+                topic: configSystem.message.topicoErro,
                 content: contentFormat
             };
 

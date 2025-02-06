@@ -56,6 +56,8 @@ Este projeto foi criado para integração entre o **ZULIP** e o **ZABBIX**, poss
 | **severity**   | `{TRIGGER.SEVERITY}`                           |
 | **status**     | `{TRIGGER.STATUS}`                             |
 | **trigger**    | `{TRIGGER.NAME}`                               |
+| **eventId**    | `{EVENT.ID}`                                   |
+| **ip**         | `{HOST.IP}`                                    |
 
 ### 2. Adicionar o Script
 

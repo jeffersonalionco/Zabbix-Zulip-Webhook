@@ -2,6 +2,7 @@
   "name": "Zabbix-Zulip-Webhook",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,7 +10,8 @@
   "license": "ISC",
   "description": "Faça integração com o ZULIP e ZABBIX com este serviço desenvolvido em nodejs para enviar alertas personalizadas e organizadas no zulip. Leia o arquivo README.md para intender melhor a intelação.",
   "dependencies": {
-    "express": "^4.21.1",
+    "express": "^4.21.2",
+    "fs-extra": "^11.3.0",
     "zulip-js": "^2.1.0"
   }
 }

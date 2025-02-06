@@ -106,7 +106,7 @@ Este projeto foi criado para integração entre o **ZULIP** e o **ZABBIX**, poss
     };
 
     // Defina o endpoint do seu servidor
-    var zulip_endpoint = "10.0.1.4:3007/zabbix-webhook"; // Substitua pelo IP ou hostname do seu servidor
+    var zulip_endpoint = "IP-DO-SERVIDOR-DO-SEU-PROJETO:3007/zabbix-webhook"; // Substitua pelo IP ou hostname do seu servidor
 
     // Envia a requisição POST para o endpoint
     resp = req.post(zulip_endpoint, JSON.stringify(payload));
